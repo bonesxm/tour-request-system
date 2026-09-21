@@ -20,4 +20,7 @@ assignees: ""
 Что произошло на самом деле?
 
 ## Приоритет
-Medium
+- [ ] Low
+- [ ] Medium
+- [ ] High
+- [ ] Critical
