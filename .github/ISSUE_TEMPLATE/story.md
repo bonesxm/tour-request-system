@@ -1,6 +1,9 @@
 name: User Story
+
 about: Новая пользовательская функция
+
 title: "[STORY] "
+
 labels: ""
 assignees: ""
 
