@@ -1,11 +1,10 @@
+---
 name: User Story
-
-about: Новая пользовательская функция
-
-title: "[STORY] "
-
+about: ...
+title: ...
 labels: ""
 assignees: ""
+---
 
 ## User Story
 Как [роль пользователя], я хочу [действие], чтобы [результат].
