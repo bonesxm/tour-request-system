@@ -1,8 +1,10 @@
+---
 name: Technical Task
 about: Техническая задача проекта
 title: "[TECH] "
 labels: ""
 assignees: ""
+---
 
 ## Описание
 Опишите техническую задачу.
