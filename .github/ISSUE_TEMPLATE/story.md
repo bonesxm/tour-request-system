@@ -17,4 +17,7 @@ assignees: ""
 - [ ] Критерий 3
 
 ## Приоритет
-Medium
+- [ ] Low
+- [ ] Medium
+- [ ] High
+- [ ] Critical
