@@ -338,8 +338,13 @@
         "size": {
           "width": 1120,
           "height": 650
-        }
+        },
+        "version": "2.6.2",
+        "cells": []
       }
-    ]
-  }
+    ],
+    "diagramTop": 10,
+    "threatTop": 100
+  },
+  "version": "2.6.2"
 }
