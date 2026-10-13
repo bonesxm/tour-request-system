@@ -22,6 +22,51 @@
         "version": "2.6.2",
         "cells": [
           {
+            "shape": "edge",
+            "attrs": {
+              "line": {
+                "stroke": "#dc2626",
+                "targetMarker": null,
+                "strokeDasharray": "9 6"
+              }
+            },
+            "id": "2a1e4645-bd5a-494b-b4e7-8dbb986eefed",
+            "zIndex": 0,
+            "labels": [
+              {
+                "position": 0.13,
+                "attrs": {
+                  "label": {
+                    "text": "TRUST BOUNDARY",
+                    "fontSize": 13,
+                    "fontWeight": 700,
+                    "fill": "#dc2626"
+                  },
+                  "text": {
+                    "text": "TRUST BOUNDARY"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Trust Boundary: External / Internal",
+              "description": "Сыртқы менеджер мен ішкі қолданба арасындағы сенім шекарасы.",
+              "isTrustBoundary": true,
+              "outOfScope": false,
+              "threats": [],
+              "hasOpenThreats": false
+            },
+            "source": {
+              "x": 395,
+              "y": 120
+            },
+            "target": {
+              "x": 395,
+              "y": 560
+            }
+          },
+          {
             "position": {
               "x": 75,
               "y": 225
@@ -31,9 +76,15 @@
               "height": 90
             },
             "attrs": {
+              "text": {
+                "fontSize": 15,
+                "fill": "#152238",
+                "text": "Manager\n(Менеджер)",
+                "fontWeight": 600
+              },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               },
               "label": {
@@ -46,16 +97,11 @@
                   "height": -8,
                   "ellipsis": false
                 }
-              },
-              "text": {
-                "text": "Manager\n(Менеджер)",
-                "fontSize": 15,
-                "fontWeight": 600,
-                "fill": "#152238"
               }
             },
             "visible": true,
             "shape": "actor",
+            "zIndex": 1,
             "ports": {
               "groups": {
                 "top": {
@@ -139,7 +185,6 @@
               ]
             },
             "id": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
-            "zIndex": 1,
             "data": {
               "type": "tm.Actor",
               "name": "Manager\n(Менеджер)",
@@ -167,16 +212,22 @@
           {
             "position": {
               "x": 505,
-              "y": 225
+              "y": 225.0000000000004
             },
             "size": {
-              "width": 225,
-              "height": 90
+              "width": 230,
+              "height": 150
             },
             "attrs": {
+              "text": {
+                "fontSize": 15,
+                "fill": "#152238",
+                "text": "Web Application\nAuthentication",
+                "fontWeight": 600
+              },
               "body": {
-                "stroke": "#333333",
-                "strokeWidth": 1.5,
+                "stroke": "red",
+                "strokeWidth": 2.5,
                 "strokeDasharray": null
               },
               "label": {
@@ -189,16 +240,11 @@
                   "height": -8,
                   "ellipsis": false
                 }
-              },
-              "text": {
-                "text": "Web Application\nAuthentication",
-                "fontSize": 15,
-                "fontWeight": 600,
-                "fill": "#152238"
               }
             },
             "visible": true,
             "shape": "process",
+            "zIndex": 2,
             "ports": {
               "groups": {
                 "top": {
@@ -282,7 +328,6 @@
               ]
             },
             "id": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-            "zIndex": 2,
             "data": {
               "type": "tm.Process",
               "name": "Web Application\nAuthentication",
@@ -353,6 +398,12 @@
               "height": 90
             },
             "attrs": {
+              "text": {
+                "fontSize": 15,
+                "fill": "#152238",
+                "text": "Database\nUsers / Requests",
+                "fontWeight": 600
+              },
               "topLine": {
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
@@ -371,16 +422,11 @@
                   "height": -8,
                   "ellipsis": false
                 }
-              },
-              "text": {
-                "text": "Database\nUsers / Requests",
-                "fontSize": 15,
-                "fontWeight": 600,
-                "fill": "#152238"
               }
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 3,
             "ports": {
               "groups": {
                 "top": {
@@ -464,7 +510,6 @@
               ]
             },
             "id": "1d1d1661-e31c-4579-bcaa-051d545397bb",
-            "zIndex": 3,
             "data": {
               "type": "tm.Store",
               "name": "Database\nUsers / Requests",
@@ -495,16 +540,6 @@
           },
           {
             "shape": "edge",
-            "id": "2e1fa5fa-14a0-4251-8b40-f835f2d56ea4",
-            "zIndex": 4,
-            "source": {
-              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
-              "port": "5dff6d10-da90-43bb-87b6-7accc04f76bc"
-            },
-            "target": {
-              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "835b88ff-454b-4823-b42c-ac1c6a0cd42b"
-            },
             "attrs": {
               "line": {
                 "stroke": "#2563eb",
@@ -515,6 +550,8 @@
                 }
               }
             },
+            "id": "2e1fa5fa-14a0-4251-8b40-f835f2d56ea4",
+            "zIndex": 4,
             "labels": [
               {
                 "position": 0.5,
@@ -544,7 +581,6 @@
               "isPublicNetwork": true,
               "protocol": "HTTPS"
             },
-            "vertices": [],
             "connector": {
               "name": "rounded",
               "args": {
@@ -553,20 +589,19 @@
             },
             "router": {
               "name": "normal"
-            }
+            },
+            "source": {
+              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
+              "port": "5dff6d10-da90-43bb-87b6-7accc04f76bc"
+            },
+            "target": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "835b88ff-454b-4823-b42c-ac1c6a0cd42b"
+            },
+            "vertices": []
           },
           {
             "shape": "edge",
-            "id": "3c65adb1-9ba3-487e-95c4-7c0bcf5b645f",
-            "zIndex": 4,
-            "source": {
-              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "8c6e5441-6478-48a5-a4a0-5e25f6c75dd7"
-            },
-            "target": {
-              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
-              "port": "c8aeab74-0355-46ea-bae8-c864566acfe4"
-            },
             "attrs": {
               "line": {
                 "stroke": "#2563eb",
@@ -577,6 +612,8 @@
                 }
               }
             },
+            "id": "3c65adb1-9ba3-487e-95c4-7c0bcf5b645f",
+            "zIndex": 4,
             "labels": [
               {
                 "position": 0.5,
@@ -606,7 +643,6 @@
               "isPublicNetwork": false,
               "protocol": "TLS (planned)"
             },
-            "vertices": [],
             "connector": {
               "name": "rounded",
               "args": {
@@ -615,20 +651,19 @@
             },
             "router": {
               "name": "normal"
-            }
+            },
+            "source": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "8c6e5441-6478-48a5-a4a0-5e25f6c75dd7"
+            },
+            "target": {
+              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
+              "port": "c8aeab74-0355-46ea-bae8-c864566acfe4"
+            },
+            "vertices": []
           },
           {
             "shape": "edge",
-            "id": "400acfc8-c56f-4dc4-a18b-89a02b7e5e26",
-            "zIndex": 4,
-            "source": {
-              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
-              "port": "525fca54-ed97-4a1a-a122-9ed9bac1e3bd"
-            },
-            "target": {
-              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
-            },
             "attrs": {
               "line": {
                 "stroke": "#2563eb",
@@ -639,6 +674,8 @@
                 }
               }
             },
+            "id": "400acfc8-c56f-4dc4-a18b-89a02b7e5e26",
+            "zIndex": 4,
             "labels": [
               {
                 "position": 0.5,
@@ -668,6 +705,23 @@
               "isPublicNetwork": false,
               "protocol": "TLS (planned)"
             },
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
+            },
+            "source": {
+              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
+              "port": "525fca54-ed97-4a1a-a122-9ed9bac1e3bd"
+            },
+            "target": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
+            },
             "vertices": [
               {
                 "x": 1067.5,
@@ -677,29 +731,10 @@
                 "x": 617.5,
                 "y": 505
               }
-            ],
-            "connector": {
-              "name": "rounded",
-              "args": {
-                "radius": 12
-              }
-            },
-            "router": {
-              "name": "normal"
-            }
+            ]
           },
           {
             "shape": "edge",
-            "id": "0572c22a-b7de-4936-b4d4-f6e912299a32",
-            "zIndex": 4,
-            "source": {
-              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
-            },
-            "target": {
-              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
-              "port": "04b3c853-791d-4b6c-a7f3-c808b0a68503"
-            },
             "attrs": {
               "line": {
                 "stroke": "#2563eb",
@@ -710,6 +745,8 @@
                 }
               }
             },
+            "id": "0572c22a-b7de-4936-b4d4-f6e912299a32",
+            "zIndex": 4,
             "labels": [
               {
                 "position": 0.5,
@@ -739,6 +776,23 @@
               "isPublicNetwork": true,
               "protocol": "HTTPS"
             },
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
+            },
+            "source": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
+            },
+            "target": {
+              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
+              "port": "04b3c853-791d-4b6c-a7f3-c808b0a68503"
+            },
             "vertices": [
               {
                 "x": 617.5,
@@ -748,62 +802,7 @@
                 "x": 182.5,
                 "y": 410
               }
-            ],
-            "connector": {
-              "name": "rounded",
-              "args": {
-                "radius": 12
-              }
-            },
-            "router": {
-              "name": "normal"
-            }
-          },
-          {
-            "shape": "edge",
-            "id": "2a1e4645-bd5a-494b-b4e7-8dbb986eefed",
-            "zIndex": 0,
-            "source": {
-              "x": 395,
-              "y": 120
-            },
-            "target": {
-              "x": 395,
-              "y": 560
-            },
-            "attrs": {
-              "line": {
-                "stroke": "#dc2626",
-                "strokeWidth": 2,
-                "strokeDasharray": "9 6",
-                "targetMarker": null
-              }
-            },
-            "labels": [
-              {
-                "position": 0.13,
-                "attrs": {
-                  "label": {
-                    "text": "TRUST BOUNDARY",
-                    "fontSize": 13,
-                    "fontWeight": 700,
-                    "fill": "#dc2626"
-                  },
-                  "text": {
-                    "text": "TRUST BOUNDARY"
-                  }
-                }
-              }
-            ],
-            "data": {
-              "type": "tm.Boundary",
-              "name": "Trust Boundary: External / Internal",
-              "description": "Сыртқы менеджер мен ішкі қолданба арасындағы сенім шекарасы.",
-              "isTrustBoundary": true,
-              "outOfScope": false,
-              "threats": [],
-              "hasOpenThreats": false
-            }
+            ]
           }
         ]
       }
