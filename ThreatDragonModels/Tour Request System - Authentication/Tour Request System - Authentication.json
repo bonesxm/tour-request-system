@@ -16,25 +16,42 @@
         "id": 0,
         "thumbnail": "./public/content/images/thumbnail.stride.jpg",
         "size": {
-          "width": 1120,
+          "width": 1350,
           "height": 650
         },
         "version": "2.6.2",
         "cells": [
           {
             "position": {
-              "x": 65,
-              "y": 245
+              "x": 75,
+              "y": 225
             },
             "size": {
-              "width": 190,
-              "height": 70
+              "width": 215,
+              "height": 90
             },
             "attrs": {
               "body": {
                 "stroke": "#333333",
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Manager\n(Менеджер)",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238",
+                "textWrap": {
+                  "width": -12,
+                  "height": -8,
+                  "ellipsis": false
+                }
+              },
+              "text": {
+                "text": "Manager\n(Менеджер)",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238"
               }
             },
             "visible": true,
@@ -125,7 +142,7 @@
             "zIndex": 1,
             "data": {
               "type": "tm.Actor",
-              "name": "Менеджер (сыртқы пайдаланушы)",
+              "name": "Manager\n(Менеджер)",
               "description": "Турагенттік менеджері, жүйеге логин және құпиясөз арқылы кіреді.",
               "isTrustBoundary": false,
               "outOfScope": false,
@@ -149,18 +166,35 @@
           },
           {
             "position": {
-              "x": 410,
-              "y": 245
+              "x": 505,
+              "y": 225
             },
             "size": {
-              "width": 200,
-              "height": 85
+              "width": 225,
+              "height": 90
             },
             "attrs": {
               "body": {
                 "stroke": "#333333",
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Web Application\nAuthentication",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238",
+                "textWrap": {
+                  "width": -12,
+                  "height": -8,
+                  "ellipsis": false
+                }
+              },
+              "text": {
+                "text": "Web Application\nAuthentication",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238"
               }
             },
             "visible": true,
@@ -251,7 +285,7 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "Web Application: Авторизация",
+              "name": "Web Application\nAuthentication",
               "description": "Кіру деректерін тексеру, сессия және рөлдік құқықтарды басқару.",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -311,12 +345,12 @@
           },
           {
             "position": {
-              "x": 790,
-              "y": 245
+              "x": 950,
+              "y": 225
             },
             "size": {
-              "width": 220,
-              "height": 75
+              "width": 235,
+              "height": 90
             },
             "attrs": {
               "topLine": {
@@ -326,6 +360,23 @@
               "bottomLine": {
                 "strokeWidth": 1.5,
                 "strokeDasharray": null
+              },
+              "label": {
+                "text": "Database\nUsers / Requests",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238",
+                "textWrap": {
+                  "width": -12,
+                  "height": -8,
+                  "ellipsis": false
+                }
+              },
+              "text": {
+                "text": "Database\nUsers / Requests",
+                "fontSize": 15,
+                "fontWeight": 600,
+                "fill": "#152238"
               }
             },
             "visible": true,
@@ -416,7 +467,7 @@
             "zIndex": 3,
             "data": {
               "type": "tm.Store",
-              "name": "Database: Users / Requests",
+              "name": "Database\nUsers / Requests",
               "description": "Пайдаланушылар, өтінімдер және аудит журналы.",
               "outOfScope": false,
               "isTrustBoundary": false,
@@ -456,11 +507,11 @@
             },
             "attrs": {
               "line": {
-                "stroke": "#475569",
-                "strokeWidth": 2,
+                "stroke": "#2563eb",
+                "strokeWidth": 2.2,
                 "targetMarker": {
                   "name": "classic",
-                  "size": 8
+                  "size": 9
                 }
               }
             },
@@ -469,17 +520,21 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "1. Login / HTTPS"
+                    "text": "1. Login request (HTTPS)",
+                    "fontSize": 13,
+                    "fontWeight": 600,
+                    "fill": "#1f2937"
                   },
                   "text": {
-                    "text": "1. Login / HTTPS"
+                    "text": "1. Login request (HTTPS)",
+                    "fontSize": 13
                   }
                 }
               }
             ],
             "data": {
               "type": "tm.Flow",
-              "name": "1. Login / HTTPS",
+              "name": "1. Login request (HTTPS)",
               "description": "Жобаланған ақпарат ағыны",
               "outOfScope": false,
               "reasonOutOfScope": "",
@@ -488,6 +543,16 @@
               "isEncrypted": true,
               "isPublicNetwork": true,
               "protocol": "HTTPS"
+            },
+            "vertices": [],
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
             }
           },
           {
@@ -504,11 +569,11 @@
             },
             "attrs": {
               "line": {
-                "stroke": "#475569",
-                "strokeWidth": 2,
+                "stroke": "#2563eb",
+                "strokeWidth": 2.2,
                 "targetMarker": {
                   "name": "classic",
-                  "size": 8
+                  "size": 9
                 }
               }
             },
@@ -517,10 +582,14 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "2. User lookup"
+                    "text": "2. User lookup",
+                    "fontSize": 13,
+                    "fontWeight": 600,
+                    "fill": "#1f2937"
                   },
                   "text": {
-                    "text": "2. User lookup"
+                    "text": "2. User lookup",
+                    "fontSize": 13
                   }
                 }
               }
@@ -536,6 +605,16 @@
               "isEncrypted": true,
               "isPublicNetwork": false,
               "protocol": "TLS (planned)"
+            },
+            "vertices": [],
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
             }
           },
           {
@@ -544,19 +623,19 @@
             "zIndex": 4,
             "source": {
               "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
-              "port": "7a046680-cc6b-4cf5-aa8a-f7dbdff2d180"
+              "port": "525fca54-ed97-4a1a-a122-9ed9bac1e3bd"
             },
             "target": {
               "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "835b88ff-454b-4823-b42c-ac1c6a0cd42b"
+              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
             },
             "attrs": {
               "line": {
-                "stroke": "#475569",
-                "strokeWidth": 2,
+                "stroke": "#2563eb",
+                "strokeWidth": 2.2,
                 "targetMarker": {
                   "name": "classic",
-                  "size": 8
+                  "size": 9
                 }
               }
             },
@@ -565,17 +644,21 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "3. User result"
+                    "text": "3. Database response",
+                    "fontSize": 13,
+                    "fontWeight": 600,
+                    "fill": "#1f2937"
                   },
                   "text": {
-                    "text": "3. User result"
+                    "text": "3. Database response",
+                    "fontSize": 13
                   }
                 }
               }
             ],
             "data": {
               "type": "tm.Flow",
-              "name": "3. User result",
+              "name": "3. Database response",
               "description": "Жобаланған ақпарат ағыны",
               "outOfScope": false,
               "reasonOutOfScope": "",
@@ -587,10 +670,23 @@
             },
             "vertices": [
               {
-                "x": 700,
-                "y": 400
+                "x": 1067.5,
+                "y": 505
+              },
+              {
+                "x": 617.5,
+                "y": 505
               }
-            ]
+            ],
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
+            }
           },
           {
             "shape": "edge",
@@ -598,19 +694,19 @@
             "zIndex": 4,
             "source": {
               "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
-              "port": "8c6e5441-6478-48a5-a4a0-5e25f6c75dd7"
+              "port": "76c5bd25-45cd-4034-8d4c-f79a7e266737"
             },
             "target": {
               "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
-              "port": "41df938b-3ca0-4b78-949f-8d868e97fe3a"
+              "port": "04b3c853-791d-4b6c-a7f3-c808b0a68503"
             },
             "attrs": {
               "line": {
-                "stroke": "#475569",
-                "strokeWidth": 2,
+                "stroke": "#2563eb",
+                "strokeWidth": 2.2,
                 "targetMarker": {
                   "name": "classic",
-                  "size": 8
+                  "size": 9
                 }
               }
             },
@@ -619,17 +715,21 @@
                 "position": 0.5,
                 "attrs": {
                   "label": {
-                    "text": "4. Login response"
+                    "text": "4. Login result",
+                    "fontSize": 13,
+                    "fontWeight": 600,
+                    "fill": "#1f2937"
                   },
                   "text": {
-                    "text": "4. Login response"
+                    "text": "4. Login result",
+                    "fontSize": 13
                   }
                 }
               }
             ],
             "data": {
               "type": "tm.Flow",
-              "name": "4. Login response",
+              "name": "4. Login result",
               "description": "Жобаланған ақпарат ағыны",
               "outOfScope": false,
               "reasonOutOfScope": "",
@@ -641,37 +741,56 @@
             },
             "vertices": [
               {
-                "x": 350,
-                "y": 450
+                "x": 617.5,
+                "y": 410
+              },
+              {
+                "x": 182.5,
+                "y": 410
               }
-            ]
+            ],
+            "connector": {
+              "name": "rounded",
+              "args": {
+                "radius": 12
+              }
+            },
+            "router": {
+              "name": "normal"
+            }
           },
           {
             "shape": "edge",
             "id": "2a1e4645-bd5a-494b-b4e7-8dbb986eefed",
             "zIndex": 0,
             "source": {
-              "x": 330,
-              "y": 110
+              "x": 395,
+              "y": 120
             },
             "target": {
-              "x": 330,
-              "y": 530
+              "x": 395,
+              "y": 560
             },
             "attrs": {
               "line": {
                 "stroke": "#dc2626",
                 "strokeWidth": 2,
-                "strokeDasharray": "8 6",
+                "strokeDasharray": "9 6",
                 "targetMarker": null
               }
             },
             "labels": [
               {
-                "position": 0.12,
+                "position": 0.13,
                 "attrs": {
+                  "label": {
+                    "text": "TRUST BOUNDARY",
+                    "fontSize": 13,
+                    "fontWeight": 700,
+                    "fill": "#dc2626"
+                  },
                   "text": {
-                    "text": "Trust Boundary"
+                    "text": "TRUST BOUNDARY"
                   }
                 }
               }
