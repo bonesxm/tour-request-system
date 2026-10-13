@@ -1,0 +1,28 @@
+{
+  "version": "2.6.2",
+  "release_version": "MVP 1.0 (planned)",
+  "released_at": "",
+  "summary": {
+    "title": "Tour Request System - Authentication",
+    "owner": "Backend Developer",
+    "description": "Турагенттік клиенттерінің өтінімдерін басқару жүйесі менеджерлерге клиент өтінімдерін тіркеуге, өңдеуге, іздеуге және олардың мәртебесін өзгертуге мүмкіндік береді.\n\nБұл қауіптер моделі пайдаланушыларды аутентификациялау модуліне арналған. Менеджер логин мен құпиясөз арқылы жүйеге кіреді. Веб-қосымша енгізілген деректерді тексеріп, деректер базасындағы пайдаланушы жазбасымен салыстырады және тиісті қолжетімділік деңгейін береді.\n\nМодельдің мақсаты – STRIDE әдісі арқылы рұқсатсыз кіру, деректерді өзгерту, ақпараттың таралуы және басқа да қауіптерді анықтап, олардың алдын алу шараларын жоспарлау.",
+    "id": 0
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "id": 1,
+        "title": "Authentication STRIDE Threat Model",
+        "diagramType": "STRIDE",
+        "placeholder": "New STRIDE diagram description",
+        "thumbnail": "./public/content/images/thumbnail.stride.jpg",
+        "version": "2.6.2",
+        "cells": []
+      }
+    ],
+    "diagramTop": 2,
+    "reviewer": "QA / DevOps",
+    "threatTop": 0
+  }
+}
