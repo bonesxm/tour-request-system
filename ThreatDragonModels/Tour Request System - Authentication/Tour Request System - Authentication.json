@@ -34,7 +34,8 @@
               },
               "id": "f411a0f0-7ddb-4a51-93ef-b3f516ff0af9",
               "z": 1,
-              "attrs": {}
+              "attrs": {},
+              "isTrustBoundary": true
             },
             {
               "type": "tm.Actor",
@@ -68,6 +69,12 @@
               "attrs": {
                 "text": {
                   "text": "Менеджер\n(сыртқы пайдаланушы)"
+                },
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               }
             },
@@ -125,6 +132,12 @@
               "attrs": {
                 "text": {
                   "text": "Web Application\nАвторизация"
+                },
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               },
               "privilegeLevel": "executionContext =Limited"
@@ -172,6 +185,12 @@
               "attrs": {
                 "text": {
                   "text": "Database\nUsers / Requests"
+                },
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
                 }
               },
               "isALog": true,
@@ -197,7 +216,9 @@
                   "position": 0.5,
                   "attrs": {
                     "text": {
-                      "text": "1. Login (HTTPS)"
+                      "text": "1. Login (HTTPS)",
+                      "font-size": "small",
+                      "font-weight": "400"
                     }
                   }
                 }
@@ -205,7 +226,14 @@
               "threats": [],
               "hasOpenThreats": false,
               "outOfScope": false,
-              "attrs": {},
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              },
               "vertices": [
                 {
                   "x": 325,
@@ -236,7 +264,9 @@
                   "position": 0.5,
                   "attrs": {
                     "text": {
-                      "text": "2. User lookup"
+                      "text": "2. User lookup",
+                      "font-size": "small",
+                      "font-weight": "400"
                     }
                   }
                 }
@@ -244,7 +274,14 @@
               "threats": [],
               "hasOpenThreats": false,
               "outOfScope": false,
-              "attrs": {},
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              },
               "vertices": [
                 {
                   "x": 710,
@@ -275,7 +312,9 @@
                   "position": 0.5,
                   "attrs": {
                     "text": {
-                      "text": "3. Authentication result"
+                      "text": "3. Authentication result",
+                      "font-size": "small",
+                      "font-weight": "400"
                     }
                   }
                 }
@@ -283,7 +322,14 @@
               "threats": [],
               "hasOpenThreats": false,
               "outOfScope": false,
-              "attrs": {},
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              },
               "vertices": [
                 {
                   "x": 700,
@@ -314,7 +360,9 @@
                   "position": 0.5,
                   "attrs": {
                     "text": {
-                      "text": "4. Access granted / denied"
+                      "text": "4. Access granted / denied",
+                      "font-size": "small",
+                      "font-weight": "400"
                     }
                   }
                 }
@@ -322,7 +370,14 @@
               "threats": [],
               "hasOpenThreats": false,
               "outOfScope": false,
-              "attrs": {},
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              },
               "vertices": [
                 {
                   "x": 330,
@@ -339,8 +394,7 @@
           "width": 1120,
           "height": 650
         },
-        "version": "2.6.2",
-        "cells": []
+        "version": "2.6.2"
       }
     ],
     "diagramTop": 10,
