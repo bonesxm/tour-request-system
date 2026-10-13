@@ -15,381 +15,6 @@
         "diagramType": "STRIDE",
         "id": 0,
         "thumbnail": "./public/content/images/thumbnail.stride.jpg",
-        "diagramJson": {
-          "cells": [
-            {
-              "type": "tm.Boundary",
-              "size": {
-                "width": 10,
-                "height": 10
-              },
-              "smooth": true,
-              "source": {
-                "x": 340,
-                "y": 105
-              },
-              "target": {
-                "x": 340,
-                "y": 560
-              },
-              "id": "f411a0f0-7ddb-4a51-93ef-b3f516ff0af9",
-              "z": 1,
-              "attrs": {},
-              "isTrustBoundary": true
-            },
-            {
-              "type": "tm.Actor",
-              "size": {
-                "width": 190,
-                "height": 90
-              },
-              "position": {
-                "x": 65,
-                "y": 260
-              },
-              "angle": 0,
-              "id": "4b6d3923-a676-4490-8356-de8e3105fbc0",
-              "z": 2,
-              "threats": [
-                {
-                  "id": "fa59ab72-b8e9-4161-882c-87b8d3bb9ada",
-                  "threatId": "2a3c1dcd-9500-4e85-99c6-c4e9147d0601",
-                  "title": "Менеджердің аккаунтын иемдену",
-                  "type": "Spoofing",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Шабуылдаушы ұрланған логин мен құпиясөз арқылы менеджер ретінде кіруі мүмкін.",
-                  "mitigation": "MFA енгізу, құпиясөзді қауіпсіз хэштеу, кіру әрекеттерін шектеу."
-                }
-              ],
-              "hasOpenThreats": true,
-              "outOfScope": false,
-              "description": "Кіру формасын қолданатын турагенттік менеджері.",
-              "attrs": {
-                "text": {
-                  "text": "Менеджер\n(сыртқы пайдаланушы)"
-                },
-                ".element-shape": {
-                  "class": "element-shape hasOpenThreats isInScope"
-                },
-                ".element-text": {
-                  "class": "element-text hasOpenThreats isInScope"
-                }
-              }
-            },
-            {
-              "type": "tm.Process",
-              "size": {
-                "width": 180,
-                "height": 130
-              },
-              "position": {
-                "x": 425,
-                "y": 240
-              },
-              "angle": 0,
-              "id": "11de6b3f-ba0d-44e5-b1f7-dba6faae78a8",
-              "z": 3,
-              "threats": [
-                {
-                  "id": "a893a55c-72a0-4d1f-88ff-def2ea70b538",
-                  "threatId": "d317434c-c772-45f0-a2ef-c083c6eacf49",
-                  "title": "Өтінім деректерін рұқсатсыз өзгерту",
-                  "type": "Tampering",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Шабуылдаушы сұраныс параметрлерін өзгертіп, басқа клиенттің өтінімін түзетуі мүмкін.",
-                  "mitigation": "Сервер жағында авторизация мен деректерді тексеру, RBAC, өзгерістер журналын жүргізу."
-                },
-                {
-                  "id": "a539cbd8-b1f4-49be-841d-3c82e3b7946b",
-                  "threatId": "b49ee873-a053-4e55-a3fd-ea322c7fff18",
-                  "title": "Авторизация қызметін сұраныстармен шамадан тыс жүктеу",
-                  "type": "Denial of service",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Көптеген сұраныстар қызметтің қолжетімсіз болуына әкелуі мүмкін.",
-                  "mitigation": "Rate limiting, ресурстар мониторингі, уақытша блоктау."
-                },
-                {
-                  "id": "25a0d174-5e1d-42f4-8db8-ffd9750b594c",
-                  "threatId": "9c4d7a05-7ffa-4f3e-ab74-b3595ac4149e",
-                  "title": "Әкімші құқықтарын заңсыз алу",
-                  "type": "Elevation of privilege",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Менеджер рөлді немесе API сұранысын өзгертіп, әкімші құқығын алуы мүмкін.",
-                  "mitigation": "RBAC, әр сұраныста серверлік құқық тексеруі, least privilege."
-                }
-              ],
-              "hasOpenThreats": true,
-              "outOfScope": false,
-              "description": "Сессия, пайдаланушы рөлі және сұраныс құқықтарын тексеру.",
-              "attrs": {
-                "text": {
-                  "text": "Web Application\nАвторизация"
-                },
-                ".element-shape": {
-                  "class": "element-shape hasOpenThreats isInScope"
-                },
-                ".element-text": {
-                  "class": "element-text hasOpenThreats isInScope"
-                }
-              },
-              "privilegeLevel": "executionContext =Limited"
-            },
-            {
-              "type": "tm.Store",
-              "size": {
-                "width": 200,
-                "height": 90
-              },
-              "position": {
-                "x": 790,
-                "y": 265
-              },
-              "angle": 0,
-              "id": "5c6e5ceb-0a2a-446e-8735-ff4393e29774",
-              "z": 4,
-              "threats": [
-                {
-                  "id": "f776731c-3536-424c-bae4-d32b06277f50",
-                  "threatId": "1e56c94b-f5e3-43f0-956a-3130f96b7c87",
-                  "title": "Клиенттердің жеке деректерінің ашылуы",
-                  "type": "Information disclosure",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Рұқсатсыз пайдаланушы телефондар мен өтінімдерге қол жеткізуі мүмкін.",
-                  "mitigation": "HTTPS, серверлік рұқсат тексеруі, деректерді шифрлау және минимизациялау."
-                },
-                {
-                  "id": "12b6dbdb-d18d-45ff-bed5-ffae70bff885",
-                  "threatId": "1497279e-08bc-433f-b6b7-305315a867f3",
-                  "title": "Өтінім мәртебесін өзгерткенін жоққа шығару",
-                  "type": "Repudiation",
-                  "modelType": "STRIDE",
-                  "status": "Open",
-                  "severity": "High",
-                  "description": "Менеджер орындалған өзгерісті жоққа шығара алады, егер оқиға тіркелмесе.",
-                  "mitigation": "Кім, қашан және қандай әрекет жасағанын audit log-та сақтау."
-                }
-              ],
-              "hasOpenThreats": true,
-              "outOfScope": false,
-              "description": "Пайдаланушы деректері, өтінімдер және аудит жазбалары.",
-              "attrs": {
-                "text": {
-                  "text": "Database\nUsers / Requests"
-                },
-                ".element-shape": {
-                  "class": "element-shape hasOpenThreats isInScope"
-                },
-                ".element-text": {
-                  "class": "element-text hasOpenThreats isInScope"
-                }
-              },
-              "isALog": true,
-              "storesCredentials": true
-            },
-            {
-              "type": "tm.Flow",
-              "size": {
-                "width": 10,
-                "height": 10
-              },
-              "smooth": true,
-              "source": {
-                "id": "4b6d3923-a676-4490-8356-de8e3105fbc0"
-              },
-              "target": {
-                "id": "11de6b3f-ba0d-44e5-b1f7-dba6faae78a8"
-              },
-              "id": "0f830cf4-1bfb-4c5d-a0d9-8d528616c293",
-              "z": 5,
-              "labels": [
-                {
-                  "position": 0.5,
-                  "attrs": {
-                    "text": {
-                      "text": "1. Login (HTTPS)",
-                      "font-size": "small",
-                      "font-weight": "400"
-                    }
-                  }
-                }
-              ],
-              "threats": [],
-              "hasOpenThreats": false,
-              "outOfScope": false,
-              "attrs": {
-                ".marker-target": {
-                  "class": "marker-target hasNoOpenThreats isInScope"
-                },
-                ".connection": {
-                  "class": "connection hasNoOpenThreats isInScope"
-                }
-              },
-              "vertices": [
-                {
-                  "x": 325,
-                  "y": 265
-                }
-              ],
-              "isEncrypted": true,
-              "isPublicNetwork": true,
-              "protocol": "HTTPS"
-            },
-            {
-              "type": "tm.Flow",
-              "size": {
-                "width": 10,
-                "height": 10
-              },
-              "smooth": true,
-              "source": {
-                "id": "11de6b3f-ba0d-44e5-b1f7-dba6faae78a8"
-              },
-              "target": {
-                "id": "5c6e5ceb-0a2a-446e-8735-ff4393e29774"
-              },
-              "id": "48989cc2-7e32-4f66-9426-4e4b5de64cf2",
-              "z": 6,
-              "labels": [
-                {
-                  "position": 0.5,
-                  "attrs": {
-                    "text": {
-                      "text": "2. User lookup",
-                      "font-size": "small",
-                      "font-weight": "400"
-                    }
-                  }
-                }
-              ],
-              "threats": [],
-              "hasOpenThreats": false,
-              "outOfScope": false,
-              "attrs": {
-                ".marker-target": {
-                  "class": "marker-target hasNoOpenThreats isInScope"
-                },
-                ".connection": {
-                  "class": "connection hasNoOpenThreats isInScope"
-                }
-              },
-              "vertices": [
-                {
-                  "x": 710,
-                  "y": 275
-                }
-              ],
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "Internal connection"
-            },
-            {
-              "type": "tm.Flow",
-              "size": {
-                "width": 10,
-                "height": 10
-              },
-              "smooth": true,
-              "source": {
-                "id": "5c6e5ceb-0a2a-446e-8735-ff4393e29774"
-              },
-              "target": {
-                "id": "11de6b3f-ba0d-44e5-b1f7-dba6faae78a8"
-              },
-              "id": "92b050a1-d2a3-4ab5-8aae-73a98882432b",
-              "z": 7,
-              "labels": [
-                {
-                  "position": 0.5,
-                  "attrs": {
-                    "text": {
-                      "text": "3. Authentication result",
-                      "font-size": "small",
-                      "font-weight": "400"
-                    }
-                  }
-                }
-              ],
-              "threats": [],
-              "hasOpenThreats": false,
-              "outOfScope": false,
-              "attrs": {
-                ".marker-target": {
-                  "class": "marker-target hasNoOpenThreats isInScope"
-                },
-                ".connection": {
-                  "class": "connection hasNoOpenThreats isInScope"
-                }
-              },
-              "vertices": [
-                {
-                  "x": 700,
-                  "y": 420
-                }
-              ],
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "Internal connection"
-            },
-            {
-              "type": "tm.Flow",
-              "size": {
-                "width": 10,
-                "height": 10
-              },
-              "smooth": true,
-              "source": {
-                "id": "11de6b3f-ba0d-44e5-b1f7-dba6faae78a8"
-              },
-              "target": {
-                "id": "4b6d3923-a676-4490-8356-de8e3105fbc0"
-              },
-              "id": "3bd2ede9-222d-4bec-83bf-2dc6c841d798",
-              "z": 8,
-              "labels": [
-                {
-                  "position": 0.5,
-                  "attrs": {
-                    "text": {
-                      "text": "4. Access granted / denied",
-                      "font-size": "small",
-                      "font-weight": "400"
-                    }
-                  }
-                }
-              ],
-              "threats": [],
-              "hasOpenThreats": false,
-              "outOfScope": false,
-              "attrs": {
-                ".marker-target": {
-                  "class": "marker-target hasNoOpenThreats isInScope"
-                },
-                ".connection": {
-                  "class": "connection hasNoOpenThreats isInScope"
-                }
-              },
-              "vertices": [
-                {
-                  "x": 330,
-                  "y": 430
-                }
-              ],
-              "isEncrypted": true,
-              "isPublicNetwork": true,
-              "protocol": "HTTPS"
-            }
-          ]
-        },
         "size": {
           "width": 1120,
           "height": 650
@@ -398,12 +23,12 @@
         "cells": [
           {
             "position": {
-              "x": 260,
-              "y": 290
+              "x": 65,
+              "y": 245
             },
             "size": {
-              "width": 112.5,
-              "height": 60
+              "width": 190,
+              "height": 70
             },
             "attrs": {
               "body": {
@@ -500,24 +125,36 @@
             "zIndex": 1,
             "data": {
               "type": "tm.Actor",
-              "name": "Actor",
-              "description": "",
+              "name": "Менеджер (сыртқы пайдаланушы)",
+              "description": "Турагенттік менеджері, жүйеге логин және құпиясөз арқылы кіреді.",
               "isTrustBoundary": false,
               "outOfScope": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "providesAuthentication": false,
-              "threats": []
+              "hasOpenThreats": true,
+              "providesAuthentication": true,
+              "threats": [
+                {
+                  "id": "ca5f3efa-3825-4476-b878-c5a4c8d6060b",
+                  "threatId": "16136890-ee87-40b3-a067-81984876e001",
+                  "title": "S: Менеджердің атынан кіру",
+                  "type": "Spoofing",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Ұрланған тіркелгі деректерімен басқа адам менеджер ретінде жүйеге кіреді.",
+                  "mitigation": "MFA, пароль хэші, кіру әрекеттерін шектеу."
+                }
+              ]
             }
           },
           {
             "position": {
-              "x": 508,
-              "y": 290
+              "x": 410,
+              "y": 245
             },
             "size": {
-              "width": 60,
-              "height": 60
+              "width": 200,
+              "height": 85
             },
             "attrs": {
               "body": {
@@ -614,27 +251,72 @@
             "zIndex": 2,
             "data": {
               "type": "tm.Process",
-              "name": "Process",
-              "description": "",
+              "name": "Web Application: Авторизация",
+              "description": "Кіру деректерін тексеру, сессия және рөлдік құқықтарды басқару.",
               "outOfScope": false,
               "isTrustBoundary": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "handlesCardPayment": false,
               "handlesGoodsOrServices": false,
-              "isWebApplication": false,
+              "isWebApplication": true,
               "privilegeLevel": "",
-              "threats": []
+              "threats": [
+                {
+                  "id": "c7ba758b-1929-4321-b403-b0851faf3993",
+                  "threatId": "5754dee7-3940-414a-8b07-d8748feec80f",
+                  "title": "T: Өтінімді рұқсатсыз өзгерту",
+                  "type": "Tampering",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "API сұранысын өзгерту арқылы басқа клиенттің өтінімі өңделеді.",
+                  "mitigation": "Серверлік валидация және әр өтінімге RBAC тексеруі."
+                },
+                {
+                  "id": "f7be00e3-dce7-430b-9898-c155cde26fa2",
+                  "threatId": "9de64c0c-0869-41d5-9caa-8ea2ed6b1128",
+                  "title": "R: Өзгерісті жоққа шығару",
+                  "type": "Repudiation",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Пайдаланушы өтінім мәртебесін өзгерткенін жоққа шығарады.",
+                  "mitigation": "Audit log: пайдаланушы ID, әрекет, уақыт, өзгеріс."
+                },
+                {
+                  "id": "b7315a61-7923-4b69-8f57-bc5fcfdd3815",
+                  "threatId": "1c4846f3-6fe8-4098-a650-4a62868c0fb1",
+                  "title": "D: Авторизацияға жүктеме",
+                  "type": "Denial of service",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Көп сұраныс жүйеге кіру қызметін істен шығарады.",
+                  "mitigation": "Rate limiting, мониторинг, сұраныс шектеулері."
+                },
+                {
+                  "id": "cab23e51-7d36-41ab-af91-54843fa60b23",
+                  "threatId": "449404d7-86f7-401b-8278-a03a2824920b",
+                  "title": "E: Әкімші құқығын алу",
+                  "type": "Elevation of privilege",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Менеджер API арқылы өзіне әкімші рөлін тағайындауға тырысады.",
+                  "mitigation": "Least privilege және серверлік RBAC."
+                }
+              ]
             }
           },
           {
             "position": {
-              "x": 697,
-              "y": 290
+              "x": 790,
+              "y": 245
             },
             "size": {
-              "width": 120,
-              "height": 60
+              "width": 220,
+              "height": 75
             },
             "attrs": {
               "topLine": {
@@ -734,18 +416,274 @@
             "zIndex": 3,
             "data": {
               "type": "tm.Store",
-              "name": "Store",
-              "description": "",
+              "name": "Database: Users / Requests",
+              "description": "Пайдаланушылар, өтінімдер және аудит журналы.",
               "outOfScope": false,
               "isTrustBoundary": false,
               "reasonOutOfScope": "",
-              "hasOpenThreats": false,
+              "hasOpenThreats": true,
               "isALog": false,
               "isEncrypted": false,
               "isSigned": false,
-              "storesCredentials": false,
+              "storesCredentials": true,
               "storesInventory": false,
-              "threats": []
+              "threats": [
+                {
+                  "id": "def38ffb-0f04-4aba-a275-c8c1ce436dae",
+                  "threatId": "7a5ee9cc-9c77-4811-94b1-e7ee0968a9b0",
+                  "title": "I: Клиент деректерінің таралуы",
+                  "type": "Information disclosure",
+                  "modelType": "STRIDE",
+                  "status": "Open",
+                  "severity": "High",
+                  "description": "Рұқсатсыз тұлға клиенттің байланыс деректерін көреді.",
+                  "mitigation": "HTTPS, қолжетімділікті тексеру, шифрлау."
+                }
+              ]
+            }
+          },
+          {
+            "shape": "edge",
+            "id": "2e1fa5fa-14a0-4251-8b40-f835f2d56ea4",
+            "zIndex": 4,
+            "source": {
+              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
+              "port": "5dff6d10-da90-43bb-87b6-7accc04f76bc"
+            },
+            "target": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "835b88ff-454b-4823-b42c-ac1c6a0cd42b"
+            },
+            "attrs": {
+              "line": {
+                "stroke": "#475569",
+                "strokeWidth": 2,
+                "targetMarker": {
+                  "name": "classic",
+                  "size": 8
+                }
+              }
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "1. Login / HTTPS"
+                  },
+                  "text": {
+                    "text": "1. Login / HTTPS"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "1. Login / HTTPS",
+              "description": "Жобаланған ақпарат ағыны",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": [],
+              "isEncrypted": true,
+              "isPublicNetwork": true,
+              "protocol": "HTTPS"
+            }
+          },
+          {
+            "shape": "edge",
+            "id": "3c65adb1-9ba3-487e-95c4-7c0bcf5b645f",
+            "zIndex": 4,
+            "source": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "8c6e5441-6478-48a5-a4a0-5e25f6c75dd7"
+            },
+            "target": {
+              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
+              "port": "c8aeab74-0355-46ea-bae8-c864566acfe4"
+            },
+            "attrs": {
+              "line": {
+                "stroke": "#475569",
+                "strokeWidth": 2,
+                "targetMarker": {
+                  "name": "classic",
+                  "size": 8
+                }
+              }
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "2. User lookup"
+                  },
+                  "text": {
+                    "text": "2. User lookup"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "2. User lookup",
+              "description": "Жобаланған ақпарат ағыны",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": [],
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "protocol": "TLS (planned)"
+            }
+          },
+          {
+            "shape": "edge",
+            "id": "400acfc8-c56f-4dc4-a18b-89a02b7e5e26",
+            "zIndex": 4,
+            "source": {
+              "cell": "1d1d1661-e31c-4579-bcaa-051d545397bb",
+              "port": "7a046680-cc6b-4cf5-aa8a-f7dbdff2d180"
+            },
+            "target": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "835b88ff-454b-4823-b42c-ac1c6a0cd42b"
+            },
+            "attrs": {
+              "line": {
+                "stroke": "#475569",
+                "strokeWidth": 2,
+                "targetMarker": {
+                  "name": "classic",
+                  "size": 8
+                }
+              }
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "3. User result"
+                  },
+                  "text": {
+                    "text": "3. User result"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "3. User result",
+              "description": "Жобаланған ақпарат ағыны",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": [],
+              "isEncrypted": true,
+              "isPublicNetwork": false,
+              "protocol": "TLS (planned)"
+            },
+            "vertices": [
+              {
+                "x": 700,
+                "y": 400
+              }
+            ]
+          },
+          {
+            "shape": "edge",
+            "id": "0572c22a-b7de-4936-b4d4-f6e912299a32",
+            "zIndex": 4,
+            "source": {
+              "cell": "defb6ec7-0fd7-428d-968f-98c73c0f5358",
+              "port": "8c6e5441-6478-48a5-a4a0-5e25f6c75dd7"
+            },
+            "target": {
+              "cell": "273e6974-af8b-4b30-9cd5-1d1c00a726af",
+              "port": "41df938b-3ca0-4b78-949f-8d868e97fe3a"
+            },
+            "attrs": {
+              "line": {
+                "stroke": "#475569",
+                "strokeWidth": 2,
+                "targetMarker": {
+                  "name": "classic",
+                  "size": 8
+                }
+              }
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "4. Login response"
+                  },
+                  "text": {
+                    "text": "4. Login response"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "4. Login response",
+              "description": "Жобаланған ақпарат ағыны",
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": [],
+              "isEncrypted": true,
+              "isPublicNetwork": true,
+              "protocol": "HTTPS"
+            },
+            "vertices": [
+              {
+                "x": 350,
+                "y": 450
+              }
+            ]
+          },
+          {
+            "shape": "edge",
+            "id": "2a1e4645-bd5a-494b-b4e7-8dbb986eefed",
+            "zIndex": 0,
+            "source": {
+              "x": 330,
+              "y": 110
+            },
+            "target": {
+              "x": 330,
+              "y": 530
+            },
+            "attrs": {
+              "line": {
+                "stroke": "#dc2626",
+                "strokeWidth": 2,
+                "strokeDasharray": "8 6",
+                "targetMarker": null
+              }
+            },
+            "labels": [
+              {
+                "position": 0.12,
+                "attrs": {
+                  "text": {
+                    "text": "Trust Boundary"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Boundary",
+              "name": "Trust Boundary: External / Internal",
+              "description": "Сыртқы менеджер мен ішкі қолданба арасындағы сенім шекарасы.",
+              "isTrustBoundary": true,
+              "outOfScope": false,
+              "threats": [],
+              "hasOpenThreats": false
             }
           }
         ]
