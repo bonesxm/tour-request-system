@@ -42,7 +42,33 @@
   </main>
  </div>
 </div>
-<div id="modalOverlay" class="modal-overlay hidden"><div class="modal"><div class="modal-header"><div><span class="eyebrow dark" id="modalEyebrow">УПРАВЛЕНИЕ ЗАЯВКАМИ</span><h2 id="modalTitle">Новая заявка</h2></div><button id="closeModal" class="icon-button" aria-label="Закрыть">×</button></div><form id="requestForm" class="modal-body"><input type="hidden" name="request_id"><div class="form-section-title">Данные клиента</div><div class="form-grid"><label class="span-2">Имя и фамилия клиента <span>*</span><input name="client_name" maxlength="150" required minlength="2" placeholder="Например, Алия Садыкова"></label><label>Телефон<input name="phone" maxlength="30" placeholder="+7 777 000 00 00"></label><label>Email<input type="email" name="email" placeholder="client@example.com"></label></div><div class="form-section-title">Детали путешествия</div><div class="form-grid"><label class="span-2">Направление <span>*</span><input name="destination" maxlength="150" required minlength="2" placeholder="Например, Анталья, Турция"></label><label>Дата вылета<input name="start_date" type="date"></label><label>Дата возвращения<input name="end_date" type="date"></label><label>Количество туристов <span>*</span><input name="tourists_count" type="number" min="1" max="1000" value="2" required></label><label>Бюджет, ₸<input name="budget" type="number" min="0" step="0.01" placeholder="Например, 750000"></label><label>Статус<select name="status" id="formStatus"></select></label><label>Ответственный менеджер<select name="manager_id" id="formManager"></select></label><label class="span-2">Пожелания клиента<textarea name="wishes" rows="3" maxlength="3000" placeholder="Отель у моря, трансфер, детский клуб..."></textarea></label></div><div id="formError" class="form-error hidden"></div><div class="modal-footer"><button id="deleteRequest" type="button" class="danger-button hidden">Удалить заявку</button><div class="modal-footer-right"><button type="button" class="secondary" id="cancelModal">Отмена</button><button class="primary" type="submit">Сохранить заявку →</button></div></div></form></div></div>
+<div id="modalOverlay" class="modal-overlay hidden"><div class="modal"><div class="modal-header"><div><span class="eyebrow dark" id="modalEyebrow">УПРАВЛЕНИЕ ЗАЯВКАМИ</span><h2 id="modalTitle">Новая заявка</h2></div><button id="closeModal" class="icon-button" aria-label="Закрыть">×</button></div><form id="requestForm" class="modal-body">
+    <input type="hidden" name="request_id">
+    <div class="ai-request-block">
+        <div class="form-section-title">
+            ✨ AI Smart Request
+        </div>
+
+        <label>
+            Сообщение клиента
+            <textarea id="aiRequestText"
+                      rows="3"
+                      maxlength="2000"
+                      placeholder="Например: Срочно! Из Астаны в Дубай, 2 взрослых и 1 ребёнок, бюджет 800 тысяч тенге"></textarea>
+        </label>
+
+        <button type="button"
+                class="secondary"
+                id="analyzeAiButton">
+            ✨ Заполнить с помощью ИИ
+        </button>
+
+        <div id="aiResultMessage"
+             role="status"
+             aria-live="polite"></div>
+    </div>
+    <div class="form-section-title">Данные клиента</div><div class="form-grid"><label class="span-2">Имя и фамилия клиента <span>*</span><input name="client_name" maxlength="150" required minlength="2" placeholder="Например, Алия Садыкова"></label><label>Телефон<input name="phone" maxlength="30" placeholder="+7 777 000 00 00"></label><label>Email<input type="email" name="email" placeholder="client@example.com"></label></div><div class="form-section-title">Детали путешествия</div><div class="form-grid"><label class="span-2">Направление <span>*</span><input name="destination" maxlength="150" required minlength="2" placeholder="Например, Анталья, Турция"></label><label>Дата вылета<input name="start_date" type="date"></label><label>Дата возвращения<input name="end_date" type="date"></label><label>Количество туристов <span>*</span><input name="tourists_count" type="number" min="1" max="1000" value="2" required></label><label>Бюджет, ₸<input name="budget" type="number" min="0" step="0.01" placeholder="Например, 750000"></label><label>Статус<select name="status" id="formStatus"></select></label><label>Ответственный менеджер<select name="manager_id" id="formManager"></select></label><label class="span-2">Пожелания клиента<textarea name="wishes" rows="3" maxlength="3000" placeholder="Отель у моря, трансфер, детский клуб..."></textarea></label></div><div id="formError" class="form-error hidden"></div><div class="modal-footer"><button id="deleteRequest" type="button" class="danger-button hidden">Удалить заявку</button><div class="modal-footer-right"><button type="button" class="secondary" id="cancelModal">Отмена</button><button class="primary" type="submit">Сохранить заявку →</button></div></div>
+</form></div></div>
 <div id="managerOverlay" class="modal-overlay hidden"><div class="modal compact-modal"><div class="modal-header"><div><span class="eyebrow dark">УПРАВЛЕНИЕ КОМАНДОЙ</span><h2>Новый сотрудник</h2></div><button class="icon-button" id="closeManager">×</button></div><form id="managerForm" class="modal-body"><label>Имя сотрудника<input name="name" required minlength="2" placeholder="Имя и фамилия"></label><label>Email<input name="email" type="email" required placeholder="manager@agency.kz"></label><label>Пароль (от 8 символов)<input name="password" type="password" minlength="8" required></label><div id="managerError" class="form-error hidden"></div><div class="modal-footer"><button class="secondary" type="button" id="cancelManager">Отмена</button><button class="primary" type="submit">Создать сотрудника</button></div></form></div></div>
 <div id="toast" role="status" class="toast hidden"></div>
 <script src="/script.js" defer></script>

@@ -28,12 +28,70 @@ async function loadFiltered(){try{const s=$('#searchInput').value, status=$('#st
 function renderClients(){const m=new Map();state.requests.forEach(r=>{let c=m.get(r.client_id);if(!c){c={...r,count:0};m.set(r.client_id,c);}c.count++;});$('#clientRows').innerHTML=[...m.values()].map(c=>`<tr><td><div class="client-badge"><div class="mini-avatar">${esc(initials(c.client_name))}</div><strong>${esc(c.client_name)}</strong></div></td><td>${esc(c.phone||'—')}<br><span style="color:#98a5b6">${esc(c.email||'—')}</span></td><td><strong>${c.count}</strong></td><td>${esc(c.destination)}</td></tr>`).join('')||'<tr><td colspan="4">Пока нет клиентов</td></tr>';}
 function renderTeam(){$('#teamCards').innerHTML=state.managers.map(m=>`<div class="panel team-card"><div class="team-avatar">${esc(initials(m.name))}</div><h3>${esc(m.name)}</h3><p>${esc(m.email)}</p><span class="role-pill">${m.role==='admin'?'Администратор':'Менеджер'}</span><span style="font-size:10px;color:#55a482;margin-left:9px">● ${m.active?'Активен':'Отключён'}</span></div>`).join('');}
 function renderAnalytics(d){const total=d.total||1;$('#analyticsStatuses').innerHTML=state.meta.statuses.map(s=>`<div class="analytics-bar-row"><div class="analytics-bar-top"><strong>${esc(s)}</strong><span>${d.counts[s]||0} · ${Math.round((d.counts[s]||0)/total*100)}%</span></div><div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${(d.counts[s]||0)/total*100}%;background:${colors[s]}"></div></div></div>`).join('');$('#activityRows').innerHTML=d.activity.length?d.activity.map(a=>`<div class="activity-item"><div class="activity-dot">✓</div><div><strong>${esc(a.action)} ${a.request_id?'#'+a.request_id:''}</strong><p>${esc(a.manager_name||'Система')} · ${shortDate(a.created_at)}</p></div></div>`).join(''):'<p>Пока нет действий</p>';}
-function openRequest(id=null){state.editing=id;const f=$('#requestForm');f.reset();$('#formStatus').value='Новая';$('#formManager').value=String(state.user.id);$('#formError').classList.add('hidden');$('#deleteRequest').classList.toggle('hidden',!id||state.user.role!=='admin');if(id){const r=state.requests.find(x=>x.id===id);if(!r)return toast('Заявка не найдена');$('#modalTitle').textContent='Заявка #'+String(id).padStart(4,'0');for(const name of ['client_name','phone','email','destination','start_date','end_date','budget','tourists_count','wishes','status','manager_id']){const e=f.elements.namedItem(name);if(e)e.value=r[name]??'';} }else $('#modalTitle').textContent='Новая заявка';$('#modalOverlay').classList.remove('hidden');document.body.style.overflow='hidden';}
+
+async function analyzeAiRequest() {
+    const text = $('#aiRequestText').value.trim();
+    const message = $('#aiResultMessage');
+    const button = $('#analyzeAiButton');
+
+    if (!text) {
+        message.textContent = 'Сначала введите сообщение клиента.';
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = '⏳ ИИ анализирует заявку...';
+    message.textContent = 'Обрабатываем сообщение...';
+
+    try {
+        const result = await api('/ai/analyze', {
+            method: 'POST',
+            body: JSON.stringify({ text })
+        });
+
+        const form = $('#requestForm');
+
+        if (result.destination) {
+            form.elements.namedItem('destination').value =
+                result.destination;
+        }
+
+        const adults = Number(result.adults ?? 0);
+        const children = Number(result.children ?? 0);
+
+        if (
+            (result.adults != null || result.children != null) &&
+            Number.isInteger(adults) &&
+            Number.isInteger(children) &&
+            adults + children > 0
+        ) {
+            form.elements.namedItem('tourists_count').value =
+                adults + children;
+        }
+
+        if (result.budget != null) {
+            form.elements.namedItem('budget').value = result.budget;
+        }
+
+        message.textContent =
+            '✓ ИИ заполнил поля. Проверьте данные перед сохранением.' +
+            (result.departure ? ' Вылет из: ' + result.departure + '.' : '') +
+            (result.priority ? ' Приоритет: ' + result.priority + '.' : '');
+
+    } catch (error) {
+        message.textContent = 'Ошибка ИИ: ' + error.message;
+    } finally {
+        button.disabled = false;
+        button.textContent = '✨ Заполнить с помощью ИИ';
+    }
+}
+
+function openRequest(id = null) { state.editing = id; const f = $('#requestForm'); f.reset(); $('#formStatus').value = 'Новая'; $('#formManager').value = String(state.user.id); $('#formError').classList.add('hidden'); $('#deleteRequest').classList.toggle('hidden', !id || state.user.role !== 'admin'); if (id) { const r = state.requests.find(x => x.id === id); if (!r) return toast('Заявка не найдена'); $('#modalTitle').textContent = 'Заявка #' + String(id).padStart(4, '0'); for (const name of ['client_name', 'phone', 'email', 'destination', 'start_date', 'end_date', 'budget', 'tourists_count', 'wishes', 'status', 'manager_id']) { const e = f.elements.namedItem(name); if (e) e.value = r[name] ?? ''; } } else $('#modalTitle').textContent = 'Новая заявка'; $('#modalOverlay').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
 function closeRequest(){$('#modalOverlay').classList.add('hidden');document.body.style.overflow='';}
 async function saveRequest(e){e.preventDefault();const f=e.target;const raw=Object.fromEntries(new FormData(f));const body={...raw,email:raw.email||null,start_date:raw.start_date||null,end_date:raw.end_date||null,budget:raw.budget?Number(raw.budget):null,tourists_count:Number(raw.tourists_count),manager_id:raw.manager_id?Number(raw.manager_id):null};delete body.request_id;if(body.start_date&&body.end_date&&body.end_date<body.start_date){$('#formError').textContent='Дата возвращения не может быть раньше даты вылета';$('#formError').classList.remove('hidden');return;}try{await api(state.editing?`/requests/${state.editing}`:'/requests',{method:state.editing?'PUT':'POST',body:JSON.stringify(body)});closeRequest();await refreshOnly();toast(state.editing?'Заявка обновлена':'Заявка успешно создана');}catch(err){$('#formError').textContent=err.message;$('#formError').classList.remove('hidden');}}
 async function removeRequest(){if(!state.editing||!confirm('Удалить заявку без возможности восстановления?'))return;try{await api(`/requests/${state.editing}`,{method:'DELETE'});closeRequest();await refreshOnly();toast('Заявка удалена');}catch(err){toast(err.message);}}
 async function login(e){e.preventDefault();const fd=new FormData(e.target);$('#loginError').classList.add('hidden');try{state.user=await api('/login',{method:'POST',body:JSON.stringify(Object.fromEntries(fd))});showApp();await refresh();goto('dashboard');toast('Добро пожаловать!');}catch(err){$('#loginError').textContent=err.message;$('#loginError').classList.remove('hidden');}}
 function exportCSV(){window.location.href='/api/export';}
 async function addManager(e){e.preventDefault();const data=Object.fromEntries(new FormData(e.target));try{await api('/managers',{method:'POST',body:JSON.stringify(data)});$('#managerOverlay').classList.add('hidden');e.target.reset();state.managers=await api('/managers');state.meta=await api('/meta');renderTeam();fillSelects();toast('Сотрудник добавлен');}catch(err){$('#managerError').textContent=err.message;$('#managerError').classList.remove('hidden');}}
-function setup(){$('#loginForm').addEventListener('submit',login);$('#togglePassword').onclick=()=>{$('#loginPassword').type=$('#loginPassword').type==='password'?'text':'password'};$$('.nav-item').forEach(b=>b.onclick=()=>goto(b.dataset.page));$$('[data-goto]').forEach(b=>b.onclick=()=>goto(b.dataset.goto));$$('.new-request-btn').forEach(b=>b.onclick=()=>openRequest());$('#closeModal').onclick=$('#cancelModal').onclick=closeRequest;$('#requestForm').addEventListener('submit',saveRequest);$('#deleteRequest').onclick=removeRequest;$('#modalOverlay').addEventListener('click',e=>{if(e.target===$('#modalOverlay'))closeRequest()});$('#searchInput').addEventListener('input',()=>{clearTimeout(setup.searchTimer);setup.searchTimer=setTimeout(loadFiltered,200)});$('#statusFilter').onchange=loadFiltered;$('#sortFilter').onchange=loadFiltered;$('#requestRows').onclick=$('#recentRows').onclick=e=>{const tr=e.target.closest('tr[data-id]');if(tr)openRequest(Number(tr.dataset.id));};$('#exportButton').onclick=$('#analyticsExport').onclick=exportCSV;$('#mobileMenu').onclick=()=>$('#sidebar').classList.toggle('open');$('#logoutButton').onclick=async()=>{await api('/logout',{method:'POST'});state.user=null;showAuth();};$('#addManagerButton').onclick=()=>{$('#managerError').classList.add('hidden');$('#managerOverlay').classList.remove('hidden')};$('#closeManager').onclick=$('#cancelManager').onclick=()=>$('#managerOverlay').classList.add('hidden');$('#managerForm').addEventListener('submit',addManager);document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeRequest();$('#managerOverlay').classList.add('hidden')}});}
+function setup() { $('#analyzeAiButton').addEventListener('click', analyzeAiRequest); $('#loginForm').addEventListener('submit',login);$('#togglePassword').onclick=()=>{$('#loginPassword').type=$('#loginPassword').type==='password'?'text':'password'};$$('.nav-item').forEach(b=>b.onclick=()=>goto(b.dataset.page));$$('[data-goto]').forEach(b=>b.onclick=()=>goto(b.dataset.goto));$$('.new-request-btn').forEach(b=>b.onclick=()=>openRequest());$('#closeModal').onclick=$('#cancelModal').onclick=closeRequest;$('#requestForm').addEventListener('submit',saveRequest);$('#deleteRequest').onclick=removeRequest;$('#modalOverlay').addEventListener('click',e=>{if(e.target===$('#modalOverlay'))closeRequest()});$('#searchInput').addEventListener('input',()=>{clearTimeout(setup.searchTimer);setup.searchTimer=setTimeout(loadFiltered,200)});$('#statusFilter').onchange=loadFiltered;$('#sortFilter').onchange=loadFiltered;$('#requestRows').onclick=$('#recentRows').onclick=e=>{const tr=e.target.closest('tr[data-id]');if(tr)openRequest(Number(tr.dataset.id));};$('#exportButton').onclick=$('#analyticsExport').onclick=exportCSV;$('#mobileMenu').onclick=()=>$('#sidebar').classList.toggle('open');$('#logoutButton').onclick=async()=>{await api('/logout',{method:'POST'});state.user=null;showAuth();};$('#addManagerButton').onclick=()=>{$('#managerError').classList.add('hidden');$('#managerOverlay').classList.remove('hidden')};$('#closeManager').onclick=$('#cancelManager').onclick=()=>$('#managerOverlay').classList.add('hidden');$('#managerForm').addEventListener('submit',addManager);document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeRequest();$('#managerOverlay').classList.add('hidden')}});}
 setup();init();
