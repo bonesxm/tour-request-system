@@ -15,10 +15,33 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from ai_module.ai_model import analyze_with_ai
+from fastapi.concurrency import run_in_threadpool
+
 ROOT = Path(__file__).resolve().parent
 DB = Path(os.environ.get('TOUR_DB_PATH', str(ROOT / 'tour_requests.db')))
 app = FastAPI(title='Tour Request System', version='1.0.0', docs_url='/api/docs')
 STATUSES = ['Новая', 'В обработке', 'Подтверждена', 'Завершена', 'Отменена']
+
+
+class AIRequestInput(BaseModel):
+    text: str = Field(min_length=1, max_length=2000)
+
+
+@app.post("/api/ai/analyze")
+async def analyze_ai_request(data: AIRequestInput):
+    try:
+        result = await run_in_threadpool(
+            analyze_with_ai,
+            data.text
+        )
+        return result
+    except Exception:
+        raise HTTPException(
+            status_code=503,
+            detail="ИИ временно недоступен. Проверьте Ollama."
+        )
+
 
 @contextmanager
 def db():
