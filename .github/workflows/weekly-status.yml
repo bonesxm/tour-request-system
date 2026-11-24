@@ -1,187 +1,40 @@
-#!/usr/bin/env python3
-"""TourFlow PM assistant. Python 3.12+, stdlib only. GitHub facts, AI text optional."""
-import argparse, csv, datetime as dt, json, os, re, sys, time, urllib.request, urllib.error
-from pathlib import Path
 
-API='https://api.github.com'; REPO_DEFAULT='bonesxm/tour-request-system'
-TZ=dt.timezone.utc
+name: weekly-status
 
-def iso(x):
-    return dt.datetime.fromisoformat(x.replace('Z','+00:00')).astimezone(TZ)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 5'
 
-def github(path, token=None):
-    url=API+path; pages=[]
-    while url:
-        headers={'Accept':'application/vnd.github+json','User-Agent':'TourFlow-LZ13-PM','X-GitHub-Api-Version':'2022-11-28'}
-        if token: headers['Authorization']='Bearer '+token
-        req=urllib.request.Request(url, headers=headers)
-        try:
-            with urllib.request.urlopen(req, timeout=35) as resp:
-                data=json.load(resp); link=resp.headers.get('Link','')
-                url=next((match.group(1) for chunk in link.split(',') if 'rel="next"' in chunk for match in [re.search(r'<([^>]+)>',chunk)] if match),None)
-        except urllib.error.HTTPError as e:
-            raise RuntimeError(f'GitHub API HTTP {e.code}; verify repository, token and permissions') from e
-        if not isinstance(data,list): raise RuntimeError('Expected list from GitHub API')
-        pages.extend(data)
-        if len(pages)>5000: raise RuntimeError('Safety cap reached; use a smaller repository')
-    return pages
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
 
-def collect(repo, token=None):
-    issues=github(f'/repos/{repo}/issues?state=all&per_page=100',token)
-    issues=[v for v in issues if 'pull_request' not in v]
-    prs=github(f'/repos/{repo}/pulls?state=all&per_page=100',token)
-    deploys=github(f'/repos/{repo}/deployments?per_page=100',token)
-    return {'issues':issues,'prs':prs,'deployments':deploys}
+jobs:
+  report:
+    runs-on: ubuntu-latest
 
-def build_facts(data, repo, start, end):
-    a,b=iso(start),iso(end)
-    if a>=b: raise ValueError('start must precede end (end exclusive)')
-    issues=[i for i in data['issues'] if 'pull_request' not in i]; prs=data['prs']; ds=data['deployments']
-    closed=[i for i in issues if i.get('closed_at') and a<=iso(i['closed_at'])<b]
-    created=[i for i in issues if i.get('created_at') and a<=iso(i['created_at'])<b]
-    # 'Currently open' is current snapshot, NOT historical sprint-end count.
-    open_now=[i for i in issues if i.get('state')=='open']
-    blocked=[i for i in open_now if any('block' in l.get('name','').lower() or 'заблок' in l.get('name','').lower() for l in i.get('labels',[]))]
-    # 'In progress' requires an explicit label; GitHub Project board column is not available from /issues REST endpoint.
-    progress=[i for i in open_now if any(l.get('name','').lower() in ('in progress','in-progress','doing','в работе') for l in i.get('labels',[]))]
-    merged=[p for p in prs if p.get('merged_at') and a<=iso(p['merged_at'])<b]
-    created_deploy=[d for d in ds if d.get('created_at') and a<=iso(d['created_at'])<b]
-    to_ref=lambda i:{'number':i['number'],'title':i.get('title',''),'url':i.get('html_url',''),'time':i.get('closed_at') or i.get('created_at')}
-    facts={'repository':repo,'period_start_utc':a.isoformat(),'period_end_exclusive_utc':b.isoformat(),
-        'counts':{'issues_created_in_period':len(created),'issues_closed_in_period':len(closed),'open_issues_at_collection':len(open_now),'blocked_open_by_label':len(blocked),'in_progress_open_by_label':len(progress),'prs_merged_in_period':len(merged),'deployment_records_created_in_period':len(created_deploy)},
-        'evidence':{'created_issues':[to_ref(i) for i in created],'closed_issues':[to_ref(i) for i in closed], 'blocked_open_issues':[to_ref(i) for i in blocked], 'in_progress_open_issues':[to_ref(i) for i in progress], 'merged_prs':[to_ref(p) for p in merged], 'deployment_records':[{'id':d.get('id'),'created_at':d.get('created_at'),'sha':d.get('sha'),'url':d.get('url')} for d in created_deploy]},
-        'limitations':['Открытые задачи: снимок на момент сбора, не исторический статус на конец спринта.','In progress/blocked: только явные метки issue, колонки GitHub Projects отдельно не запрашиваются.','Записи Deployments API не равны успешным релизам; для успешности нужны deployment statuses или Render.','Issue/PR, закрытые и вновь открытые, учитываются по полю closed_at в текущем состоянии; история переходов не восстанавливается.']}
-    return facts
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-def prompt_for(facts,version):
-    """Russian prompt, facts are the only source. Python owns all calculations."""
-    c=facts['counts']
-    lines=[
-      'Ты редактор коротких еженедельных отчётов для PM проекта TourFlow.',
-      'Ответь строго по-русски: ДВА коротких предложения, без заголовка и списка.',
-      'Не копируй JSON. Не повторяй фразы. Не давай рекомендации, оценки, причины и прогнозы.',
-      'Не называй записи deployments успешными релизами.',
-      'Числа уже подсчитаны Python. Не считай, не меняй и не придумывай числа.',
-      'Используй ровно эти факты, ничего больше:',
-      f'В период с {facts["period_start_utc"][:10]} по {facts["period_end_exclusive_utc"][:10]} (конец не включён) создано задач: {c["issues_created_in_period"]}; закрыто задач: {c["issues_closed_in_period"]}; объединено PR: {c["prs_merged_in_period"]}.',
-      f'На момент сбора данных открытых задач: {c["open_issues_at_collection"]}; с меткой blocked: {c["blocked_open_by_label"]}; с меткой in progress: {c["in_progress_open_by_label"]}.',
-      f'Создано записей deployments API за период: {c["deployment_records_created_in_period"]}; их успешность неизвестна.',
-      'Сделай 2 коротких предложения с числами. Без вводных слов и без лишних символов.'
-    ]
-    if version==2:
-        lines.append('Важно: открытые задачи — это текущий снимок, не итог на конец периода. Если статуса нет, не додумывай.')
-    return '\n'.join(lines)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-def ollama(prompt,url,model):
-    payload=json.dumps({'model':model,'prompt':prompt,'stream':False,
-       'options':{'temperature':0.2,'seed':42,'num_predict':170,'repeat_penalty':1.35,'num_ctx':2048}},
-       ensure_ascii=False).encode('utf-8')
-    req=urllib.request.Request(url.rstrip('/')+'/api/generate',data=payload,
-       headers={'Content-Type':'application/json'})
-    with urllib.request.urlopen(req,timeout=600) as resp:
-        return json.load(resp)['response'].strip()
+      - name: Generate GitHub status report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/weekly_status.py \
+            --start "$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)" \
+            --end "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --output outputs/weekly
 
-def validate_ai(text):
-    """Reject obvious repetitive/malformed text. Human verification remains required."""
-    if not text or len(text)<55: return False,'Too short or empty'
-    if text.lstrip().startswith(('{','[','```')): return False,'JSON/code instead of prose'
-    if len(text)>850: return False,'Excessively long'
-    words=re.findall(r'[\w-]+',text.lower(),re.UNICODE)
-    if len(words)<8: return False,'Too few words'
-    for n in (4,5,7):
-        seq=[tuple(words[i:i+n]) for i in range(max(0,len(words)-n+1))]
-        if seq and len(seq)-len(set(seq))>=2: return False,'Repeated word sequence'
-    if len(set(words))/len(words)<0.55: return False,'Low lexical variety'
-    if any(s in text for s in ('РЎ','Р°Р','РµР')): return False,'Broken encoding'
-    if len(re.findall(r'[а-яёА-ЯЁ]', text)) < 35: return False,'Not enough Russian text'
-    if text.count('«') != text.count('»'): return False,'Unbalanced quotation marks'
-    return True,'Format accepted; all facts still require human review'
-
-def deterministic(f):
-    """Reliable report: only Python-computed figures, no AI-generated numeric claims."""
-    c=f['counts']; s=f['period_start_utc']; e=f['period_end_exclusive_utc']; repo=f['repository']
-    return '\n'.join([
-       f'# Еженедельный статус-отчёт: {repo}',
-       f'Период (UTC): {s} — {e} (конец не включён)',
-       '',
-       '## Показатели GitHub',
-       f'- Создано Issues за период: {c["issues_created_in_period"]}.',
-       f'- Закрыто Issues за период: {c["issues_closed_in_period"]}.',
-       f'- Объединено Pull Requests за период: {c["prs_merged_in_period"]}.',
-       f'- Открытых Issues на момент сбора: {c["open_issues_at_collection"]} (не историческое число на конец спринта).',
-       f'- Из них с меткой `in progress`: {c["in_progress_open_by_label"]}.',
-       f'- Из них с меткой `blocked`: {c["blocked_open_by_label"]}.',
-       f'- Записей GitHub Deployments API за период: {c["deployment_records_created_in_period"]} (не число успешных релизов).',
-       '',
-       '## Ограничения источника',
-       '- Причины задержек, выполнение планов и успешность релизов из этих чисел не следуют.',
-       '- Метки `in progress` и `blocked` учитываются только там, где они явно указаны на Issues.',
-       '- Открытые задачи отражают текущее состояние на момент сбора, а не состояние на конец спринта.',
-       '',
-       '## Подтверждение',
-       '- Источник чисел: `facts.json` (GitHub API).',
-       '- Проверил(а): [имя, дата, ссылки на проверенные Issues/PR].',
-       '- Проверка всех утверждений обязательна до публикации.'
-    ])
-
-def verify_numbers(generated,f):
-    # Numeric claims should match an input number; not sufficient for semantic correctness.
-    allowed=set(str(v) for v in f['counts'].values())
-    nums=re.findall(r'(?<![\w])\d+(?![\w])',generated)
-    return [x for x in nums if x not in allowed] # Dates/URLs cause false positives; human audit mandatory
-
-def write_csv(path, f, text, engine):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    with path.open('w',newline='',encoding='utf-8-sig') as o:
-        w=csv.writer(o);w.writerow(['claim_id','report_quote','source_url_or_json_path','verified_true_false','error_type_semantic_stylistic','correction','reviewer','checked_at_utc'])
-        w.writerow(['1','Проверить все числа и границы периода','facts.json / counts','', '', '', '', ''])
-        w.writerow(['2','Проверить: открытые задачи — текущий снимок','facts.json / limitations','', '', '', '', ''])
-        w.writerow(['3','Не приравнены ли deployments API к успешным релизам','facts.json / evidence / deployment_records','', '', '', '', ''])
-        w.writerow(['4','Проверить все факты, причины, даты и ссылки','GitHub Issues / PR / Render','', '', '', '', ''])
-
-def run(args):
-    if args.fixture:
-        data=json.loads(Path(args.fixture).read_text(encoding='utf-8'))
-        label='DEMO fixture; NOT real GitHub measurements'
-    else:
-        data=collect(args.repo,os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN'))
-        label='GitHub API; requires human fact checking'
-    f=build_facts(data,args.repo,args.start,args.end); f['data_source']=label
-    out=Path(args.output); out.mkdir(parents=True,exist_ok=True)
-    stale=out/'report_ai_DRAFT.md'
-    if stale.exists(): stale.unlink()
-    (out/'facts.json').write_text(json.dumps(f,ensure_ascii=False,indent=2),encoding='utf-8')
-    (out/'report_deterministic.md').write_text(deterministic(f)+'\n',encoding='utf-8')
-    prompt=prompt_for(f,args.prompt_version)
-    (out/'prompt.txt').write_text(prompt,encoding='utf-8')
-    text=None; engine='not-run'
-    if args.ollama:
-        try:
-            t=time.perf_counter();text=ollama(prompt,args.ollama_url,args.model); engine=args.model
-            print(f'Ollama generated in {time.perf_counter()-t:.2f}s')
-        except Exception as exc:
-            (out/'ollama_error.txt').write_text(str(exc),encoding='utf-8')
-            print('Ollama unavailable:',exc,file=sys.stderr)
-    if text:
-        (out/'ai_raw.txt').write_text(text,encoding='utf-8')
-        valid,reason=validate_ai(text)
-        (out/'ai_validation.txt').write_text(('PASS: ' if valid else 'REJECTED: ')+reason,encoding='utf-8')
-        if not valid:
-            print('AI output rejected:',reason, file=sys.stderr)
-            text=None
-    if text:
-        footer='\n\n---\nРаскрытие ИИ: текстовый комментарий создан Ollama / '+engine+'; числовые метрики вычислены Python. Проверяющий: [ФИО, дата]. До проверки не публиковать.\n'
-        (out/'report_ai_DRAFT.md').write_text(deterministic(f)+'\n\n## Комментарий ИИ (не проверен)\n'+text+footer,encoding='utf-8')
-        (out/'numeric_warnings.txt').write_text('Human review required; unrecognized numbers (may include dates/URLs): '+str(verify_numbers(text,f)),encoding='utf-8')
-    write_csv(out/'audit_log_FILL.csv',f,text,engine)
-    (out/'status.json').write_text(json.dumps({'source':label,'engine':engine,'ai_draft_created':bool(text),'human_approved':False,'note':'Human review and manual timing mandatory'},ensure_ascii=False,indent=2),encoding='utf-8')
-    print('Outputs:',out,' AI draft:',bool(text))
-    if not text: print('Use report_deterministic.md as the main factual report; keep ai_raw.txt for audit.')
-
-def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('--repo',default=REPO_DEFAULT)
-    ap.add_argument('--start',required=True,help='UTC ISO timestamp, inclusive');ap.add_argument('--end',required=True,help='UTC ISO timestamp, exclusive')
-    ap.add_argument('--output',default='outputs/sprint');ap.add_argument('--fixture',help='OFFLINE DEMO ONLY; not real results')
-    ap.add_argument('--ollama',action='store_true');ap.add_argument('--ollama-url',default='http://localhost:11434');ap.add_argument('--model',default='qwen2.5:3b');ap.add_argument('--prompt-version',type=int,choices=[1,2],default=2)
-    run(ap.parse_args())
-if __name__=='__main__':main()
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-status-report
+          path: outputs/weekly/
